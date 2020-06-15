@@ -1,8 +1,9 @@
 <?php
 // Routes
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
 
 // $app->get('/[{name}]', function ($request, $response, $args) {
 //     // Sample log message
@@ -35,7 +36,7 @@ $app->get('/new', function (Request $request, Response $response, array $args) {
     return $this->view->render($response, 'new.twig');
 });
 
-$app->get('/password', function (Request $request, Response $response, array $args) {
+$app->get('/pass', function (Request $request, Response $response, array $args) {
     // * password page
 
     return $this->view->render($response, 'password.twig');
