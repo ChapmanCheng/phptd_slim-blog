@@ -1,6 +1,10 @@
 <?php
 
-class SqlitePDOConn extends \PDO
+namespace config;
+
+use \PDO;
+
+class SqlitePDOConn extends PDO
 {
     private $dsn = null;
 

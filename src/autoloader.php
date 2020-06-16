@@ -1,21 +1,25 @@
 <?php
 
-// TODO: try using composer.json to autoload
-spl_autoload_register('myAutoloader');
+/**
+ * ! Deprecated, use composer internal autoloader instead
+ * ! but should probably keep this for future reference 
+ */
 
-function myAutoloader($className)
-{
-    if (strpos($className, '\\') !== false) {
-        $namespaceArray = explode('\\', $className);
-        $className = end($namespaceArray);
-    };
+// spl_autoload_register('myAutoloader');
 
-    $dirs = glob(__DIR__ . "/*/", GLOB_ONLYDIR);
-    foreach ($dirs as $dir) {
-        $targetFile = $dir . $className . ".php";
+// function myAutoloader($className)
+// {
+//     if (strpos($className, '\\') !== false) {
+//         $namespaceArray = explode('\\', $className);
+//         $className = end($namespaceArray);
+//     };
 
-        if (file_exists($targetFile)) {
-            include $targetFile;
-        }
-    }
-}
+//     $dirs = glob(__DIR__ . "/*/", GLOB_ONLYDIR);
+//     foreach ($dirs as $dir) {
+//         $targetFile = $dir . $className . ".php";
+
+//         if (file_exists($targetFile)) {
+//             include $targetFile;
+//         }
+//     }
+// }
