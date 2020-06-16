@@ -15,7 +15,7 @@
                     <textarea rows="5" name="body">{{ post.body }}</textarea>
                     <input type="hidden" name="_METHOD" value="PUT"/>
                     <input type="submit" value="Save Entry" class="button">
-                    <input type="reset" value="Cancel" class="button button-secondary">
+                    <a href="{{- func.uri('/detail', post, 'id') -}}" class="button button-secondary">Back</a>
                 </form>
 
                 <form action="{{ formAction }}" method="POST" style="margin-top: 1rem;">

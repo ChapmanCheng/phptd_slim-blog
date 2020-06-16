@@ -72,9 +72,17 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
     if ($request->isPost()) {
         $post = new \Model\Post();
         $newPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
-        $newPost = $post->updatePost($newPost);
+        $newPost = $post->createPost($newPost);
 
         // TODO: redirect to "/detail?id=". $newPost['id']
+
+        if ($newPost) {
+        } else {
+            return $this->view->render($response, 'new.twig', [
+                'path' => $path,
+                'post' => $newPost
+            ]);
+        }
     }
 
     return $this->view->render($response, 'new.twig', [

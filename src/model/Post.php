@@ -39,14 +39,14 @@ class Post
     }
     public function createPost($data)
     {
-        if (empty($data['title']) || empty($data['url'])) {
+        if (empty($data['title']) || empty($data['body'])) {
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'INSERT INTO posts (title, url) VALUES(:title, :url)'
+            'INSERT INTO posts (title, body) VALUES(:title, :body)'
         );
         $statement->bindParam('title', $data['title']);
-        $statement->bindParam('url', $data['url']);
+        $statement->bindParam('body', $data['body']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment
