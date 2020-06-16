@@ -13,6 +13,7 @@ function myAutoloader($className)
     $dirs = glob(__DIR__ . "/*/", GLOB_ONLYDIR);
     foreach ($dirs as $dir) {
         $targetFile = $dir . $className . ".php";
+
         if (file_exists($targetFile)) {
             include $targetFile;
         }
