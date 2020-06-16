@@ -1,44 +1,44 @@
 <?php
 
-class Course
+class Post
 {
     protected $database;
     public function __construct(\PDO $database)
     {
         $this->database = $database;
     }
-    public function getCourses()
+    public function getPosts()
     {
         $statement = $this->database->prepare(
-            'SELECT * FROM courses ORDER BY id'
+            'SELECT * FROM posts ORDER BY id'
         );
         $statement->execute();
-        $courses = $statement->fetchAll();
-        if (empty($courses)) {
+        $Posts = $statement->fetchAll();
+        if (empty($Posts)) {
             //! empty at the moment
         }
-        return $courses;
+        return $Posts;
     }
-    public function getCourse($course_id)
+    public function getPost($Post_id)
     {
         $statement = $this->database->prepare(
-            'SELECT * FROM courses WHERE id=:id'
+            'SELECT * FROM posts WHERE id=:id'
         );
-        $statement->bindParam('id', $course_id);
+        $statement->bindParam('id', $Post_id);
         $statement->execute();
-        $course = $statement->fetch();
-        if (empty($courses)) {
+        $Post = $statement->fetch();
+        if (empty($Posts)) {
             //! empty at the moment
         }
-        return $course;
+        return $Post;
     }
-    public function createCourse($data)
+    public function createPost($data)
     {
         if (empty($data['title']) || empty($data['url'])) {
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'INSERT INTO courses(title, url) VALUES(:title, :url)'
+            'INSERT INTO Posts(title, url) VALUES(:title, :url)'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('url', $data['url']);
@@ -46,36 +46,36 @@ class Course
         if ($statement->rowCount() < 1) {
             //! empty at the moment
         }
-        return $this->getCourse($this->database->lastInsertId());
+        return $this->getPost($this->database->lastInsertId());
     }
-    public function updateCourse($data)
+    public function updatePost($data)
     {
-        if (empty($data['course_id']) || empty($data['title']) || empty($data['url'])) {
+        if (empty($data['Post_id']) || empty($data['title']) || empty($data['url'])) {
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'UPDATE courses SET title=:title, url=:url WHERE id=:id'
+            'UPDATE Posts SET title=:title, url=:url WHERE id=:id'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('url', $data['url']);
-        $statement->bindParam('id', $data['course_id']);
+        $statement->bindParam('id', $data['Post_id']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment
         }
-        return $this->getCourse($data['course_id']);
+        return $this->getPost($data['Post_id']);
     }
-    public function deleteCourse($course_id)
+    public function deletePost($Post_id)
     {
-        $this->getCourse($course_id);
+        $this->getPost($Post_id);
         $statement = $this->database->prepare(
-            'DELETE FROM courses WHERE id=:id'
+            'DELETE FROM posts WHERE id=:id'
         );
-        $statement->bindParam('id', $course_id);
+        $statement->bindParam('id', $Post_id);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment
         }
-        return ['message' => 'The course was deleted'];
+        return ['message' => 'The Post was deleted'];
     }
 }
