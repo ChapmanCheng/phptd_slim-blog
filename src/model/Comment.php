@@ -3,8 +3,11 @@
 class Comment
 {
     protected $database;
-    public function __construct(\PDO $database)
+    public function __construct(\PDO $database = null)
     {
+        if (!$database) {
+            $database = new SqlitePDOConn("blog");
+        }
         $this->database = $database;
     }
     public function getCommentsByCourseId($course_id)
