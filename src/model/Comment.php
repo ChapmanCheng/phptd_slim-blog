@@ -8,7 +8,7 @@ class Comment
     public function __construct(\PDO $database = null)
     {
         if (!$database) {
-            $database = new \SqlitePDOConn("blog");
+            $database = new \config\SqlitePDOConn("blog");
         }
         $this->database = $database;
     }
