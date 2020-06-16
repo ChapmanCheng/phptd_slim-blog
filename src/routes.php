@@ -54,14 +54,13 @@ $app->map(['GET', 'POST'], '/edit', function (Request $request, Response $respon
     $path = htmlspecialchars($uri->getPath() . '?' . $uri->getQuery());
 
     if ($request->isPost()) {
-        $updateComment = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
-        $updateComment["post_id"] = $id;
+        $upPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
+        $upPost["post_id"] = $id;
 
-        $upPost = $post->updatePost($updateComment);
+        $upPost = $post->updatePost($upPost);
 
         // TODO: redirect to "/detail?:id"
     }
-
 
     return $this->view->render($response, 'edit.twig', [
         'post' => $post->getPost($id),
