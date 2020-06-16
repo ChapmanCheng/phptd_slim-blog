@@ -9,13 +9,11 @@
 
                 {% for post in posts %}
                     <article>
-                        <h2><a href="/detail/{{ post.id }}">{{ post.title }}</a></h2>
+                        <h2><a href="/detail?id={{ post.id }}">{{ post.title }}</a></h2>
                         <time datetime="{{ post.date }}">{{ func.dateString(post.date) }}</time>
                     </article>    
                 {% endfor %}
-
-
-                
+ 
             </div>
         </div>
     </section>

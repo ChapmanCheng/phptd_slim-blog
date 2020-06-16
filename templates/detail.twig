@@ -11,7 +11,7 @@
                     <time datetime="{{ post.date }}">{{ func.dateString(post.date) }}</time>
                     <div class="entry">
                         <p>{{ post.body|nl2br }}</p>
-                        <p><a class="link" href="/edit/{{ post.id }}">Edit Entry</a></p>
+                        <p><a class="link" href="/edit?id={{ post.id }}">Edit Entry</a></p>
                     </div>
                 </article>
             </div>
@@ -20,18 +20,20 @@
     <section class="entry-comments">
         <div class="container">
                 <h2>Comments</h2>
-                <div class="comment">
-                    <strong>Carling Kirk</strong>
-                    <time datetime="2016-01-31 1:00">January 31, 2016 at 1:00</time>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut rhoncus felis, vel tincidunt neque. Vestibulum ut metus eleifend, malesuada nisl at, scelerisque sapien. Vivamus pharetra massa libero, sed feugiat turpis efficitur at.</p>
-                </div>
+                {% for comment in comments %}
+                    <div class="comment" data-commentID="{{ comment.id }}">
+                        <strong>{{ comment.name }}</strong>
+                        <time datetime="{{ comment.created_at }}">{{ func.dateString(comment.created_at) }}</time>
+                        <p>{{ comment.body|nl2br }}</p>
+                    </div>
+                {% endfor %}
                 <div class="new-comment">
-                    <form>
-                            <label for="name"> Name</label>
-                            <input type="text" name="name"><br>
-                            <label for="comment">Comment</label>
-                            <textarea rows="5" name="comment"></textarea>
-                            <input type="submit" value="Post Comment" class="button">
+                    <form action="{{ path }}?id={{post.id}}" method="POST">
+                        <label for="name">Name</label>
+                        <input type="text" name="name"><br>
+                        <label for="body">Comment</label>
+                        <textarea rows="5" name="body"></textarea>
+                        <input type="submit" value="Post Comment" class="button">
                     </form>
                 </div>
         </div>

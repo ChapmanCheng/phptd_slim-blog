@@ -12,13 +12,13 @@ class Comment
         }
         $this->database = $database;
     }
-    public function getCommentsByCourseId($course_id)
+    public function getCommentsByCourseId($post_id)
     {
-        if (empty($course_id)) {
+        if (empty($post_id)) {
             // ! empty at the moment
         }
-        $statement = $this->database->prepare('SELECT * FROM comments WHERE course_id=:course_id');
-        $statement->bindParam('course_id', $course_id);
+        $statement = $this->database->prepare('SELECT * FROM comments WHERE post_id=:post_id ORDER BY created_at DESC');
+        $statement->bindParam('post_id', $post_id);
         $statement->execute();
         $comments = $statement->fetchAll();
         if (empty($comments)) {
@@ -26,6 +26,7 @@ class Comment
         }
         return $comments;
     }
+    // ! can delete 
     public function getComment($comment_id)
     {
         if (empty($comment_id)) {
@@ -42,13 +43,14 @@ class Comment
     }
     public function createComment($data)
     {
-        if (empty($data['course_id']) || empty($data['rating']) || empty($data['comment'])) {
-            // ! empty at the moment
+        if (empty($data['post_id']) || empty($data['name']) || empty($data['body'])) {
+            echo "comment is empty, please try again";
+            die();
         }
-        $statement = $this->database->prepare('INSERT INTO comments (course_id, rating, comment) VALUES (:course_id, :rating, :comment)');
-        $statement->bindParam('course_id', $data['course_id']);
-        $statement->bindParam('rating', $data['rating']);
-        $statement->bindParam('comment', $data['comment']);
+        $statement = $this->database->prepare('INSERT INTO comments (post_id, name, body) VALUES (:post_id, :name, :body)');
+        $statement->bindParam('post_id', $data['post_id']);
+        $statement->bindParam('name', $data['name']);
+        $statement->bindParam('body', $data['body']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             // ! empty at the moment
@@ -58,9 +60,9 @@ class Comment
     public function updateComment($data)
     {
         $this->getComment($data['comment_id']);
-        $statement = $this->database->prepare('UPDATE comments SET rating=:rating, comment=:comment WHERE id=:id');
+        $statement = $this->database->prepare('UPDATE comments SET name=:name, comment=:comment WHERE id=:id');
         $statement->bindParam('id', $data['comment_id']);
-        $statement->bindParam('rating', $data['rating']);
+        $statement->bindParam('name', $data['name']);
         $statement->bindParam('comment', $data['comment']);
         $statement->execute();
         if ($statement->rowCount() < 1) {

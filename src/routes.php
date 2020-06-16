@@ -4,7 +4,6 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-
 // $app->get('/[{name}]', function ($request, $response, $args) {
 //     // Sample log message
 //     $this->logger->info("Slim-Skeleton '/' route");
@@ -26,24 +25,36 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     return $view;
 });
 
+$app->map(['GET', 'POST'], '/detail', function (Request $request, Response $response, array $args) {
     $post = new \Model\Post();
+    $comment = new \Model\Comment();
 
-    $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
-    $post = new Post();
-    // $comment = new Comment();
+    $params = $request->getQueryParams();
+    $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
+
+    if ($request->isPost()) {
+        $newComment = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
+        $newComment["post_id"] = $id;
+
+        $comment->createComment($newComment);
+    }
 
     return $this->view->render(
         $response,
         'detail.twig',
         [
             'post' => $post->getPost($id),
-            // 'comments'=>
+            'comments' => $comment->getCommentsByCourseId($id),
+            'path' => htmlspecialchars($request->getUri()->getPath())
         ]
     );
 });
 
+
 $app->get('/edit', function (Request $request, Response $response, array $args) {
     // * edit page
+    // $params = $request->getQueryParams();
+    // $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
 
     return $this->view->render($response, 'edit.twig');
 });
