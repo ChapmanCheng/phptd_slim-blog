@@ -79,9 +79,9 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
         $postBody = $request->getParsedBody();
         $mailer = new Mailer($postBody);
 
+
         if ($mailer->lookForTags())
             $mailer->stripTagsFromBody()->addTags();
-
 
         $newPost = $post->createPost($mailer->getPostData());
 

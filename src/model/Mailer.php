@@ -5,7 +5,7 @@ namespace Model;
 class Mailer
 {
     protected $postData;
-    public $tags = null;
+    protected $tags = null;
 
     public function __construct(array $postData)
     {
