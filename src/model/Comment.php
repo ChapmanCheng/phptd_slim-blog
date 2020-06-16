@@ -26,21 +26,21 @@ class Comment
         }
         return $comments;
     }
-    // ! can delete 
-    public function getComment($comment_id)
-    {
-        if (empty($comment_id)) {
-            // ! empty at the moment
-        }
-        $statement = $this->database->prepare('SELECT * FROM comments WHERE id=:id');
-        $statement->bindParam('id', $comment_id);
-        $statement->execute();
-        $comment = $statement->fetch();
-        if (empty($comment)) {
-            // ! empty at the moment
-        }
-        return $comment;
-    }
+    // // ! can delete 
+    // public function getComment($comment_id)
+    // {
+    //     if (empty($comment_id)) {
+    //         // ! empty at the moment
+    //     }
+    //     $statement = $this->database->prepare('SELECT * FROM comments WHERE id=:id');
+    //     $statement->bindParam('id', $comment_id);
+    //     $statement->execute();
+    //     $comment = $statement->fetch();
+    //     if (empty($comment)) {
+    //         // ! empty at the moment
+    //     }
+    //     return $comment;
+    // }
     public function createComment($data)
     {
         if (empty($data['post_id']) || empty($data['name']) || empty($data['body'])) {
@@ -57,28 +57,28 @@ class Comment
         }
         return $this->getComment($this->database->lastInsertId());
     }
-    public function updateComment($data)
-    {
-        $this->getComment($data['comment_id']);
-        $statement = $this->database->prepare('UPDATE comments SET name=:name, comment=:comment WHERE id=:id');
-        $statement->bindParam('id', $data['comment_id']);
-        $statement->bindParam('name', $data['name']);
-        $statement->bindParam('comment', $data['comment']);
-        $statement->execute();
-        if ($statement->rowCount() < 1) {
-            // ! empty at the moment
-        }
-        return $this->getComment($data['comment_id']);
-    }
-    public function deleteComment($comment_id)
-    {
-        $this->getComment($comment_id);
-        $statement = $this->database->prepare('DELETE FROM comments WHERE id=:id');
-        $statement->bindParam('id', $comment_id);
-        $statement->execute();
-        if ($statement->rowCount() < 1) {
-            // ! empty at the moment
-        }
-        return ['message' => 'The comment was deleted.'];
-    }
+    // public function updateComment($data)
+    // {
+    //     $this->getComment($data['comment_id']);
+    //     $statement = $this->database->prepare('UPDATE comments SET name=:name, comment=:comment WHERE id=:id');
+    //     $statement->bindParam('id', $data['comment_id']);
+    //     $statement->bindParam('name', $data['name']);
+    //     $statement->bindParam('comment', $data['comment']);
+    //     $statement->execute();
+    //     if ($statement->rowCount() < 1) {
+    //         // ! empty at the moment
+    //     }
+    //     return $this->getComment($data['comment_id']);
+    // }
+    // public function deleteComment($comment_id)
+    // {
+    //     $this->getComment($comment_id);
+    //     $statement = $this->database->prepare('DELETE FROM comments WHERE id=:id');
+    //     $statement->bindParam('id', $comment_id);
+    //     $statement->execute();
+    //     if ($statement->rowCount() < 1) {
+    //         // ! empty at the moment
+    //     }
+    //     return ['message' => 'The comment was deleted.'];
+    // }
 }
