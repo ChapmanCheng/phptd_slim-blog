@@ -7,8 +7,7 @@
         <div class="container">
             <div class="entry-list">
 
-                {% for post in posts %}       
-                {{-func.uri('/detail', post, 'id' )-}}
+                {% for post in posts %}
                     <article>
                         <h2><a href="{{- func.uri("/detail", post) -}}">{{ post.title }}</a></h2>
                         <time datetime="{{ post.date }}">{{ func.dateString(post.date) }}</time>
