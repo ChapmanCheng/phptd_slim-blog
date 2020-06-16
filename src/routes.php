@@ -15,7 +15,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 $app->get('/', function (Request $request, Response $response, array $args) {
     // * index page
-    $post = new Post();
+    $post = new \Model\Post();
 
     $view = $this->view->render(
         $response,
@@ -26,8 +26,7 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     return $view;
 });
 
-$app->get('/detail/{id}', function (Request $request, Response $response, array $args) {
-    // * detail page
+    $post = new \Model\Post();
 
     $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
     $post = new Post();
