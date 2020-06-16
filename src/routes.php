@@ -51,12 +51,28 @@ $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $resp
 });
 
 
-$app->get('/edit', function (Request $request, Response $response, array $args) {
-    // * edit page
-    // $params = $request->getQueryParams();
-    // $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
+$app->map(['GET', 'POST'], '/edit', function (Request $request, Response $response, array $args) {
+    $post = new \Model\Post();
 
-    return $this->view->render($response, 'edit.twig');
+    $params = $request->getQueryParams();
+    $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
+    $uri = $request->getUri();
+    $path = htmlspecialchars($uri->getPath() . '?' . $uri->getQuery());
+
+    if ($request->isPost()) {
+        $updateComment = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
+        $updateComment["post_id"] = $id;
+
+        $upPost = $post->updatePost($updateComment);
+
+        // TODO: redirect to "/detail?:id"
+    }
+
+
+    return $this->view->render($response, 'edit.twig', [
+        'post' => $post->getPost($id),
+        'path' => $path
+    ]);
 });
 
 $app->get('/new', function (Request $request, Response $response, array $args) {

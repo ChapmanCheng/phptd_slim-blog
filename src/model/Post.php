@@ -43,7 +43,7 @@ class Post
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'INSERT INTO Posts(title, url) VALUES(:title, :url)'
+            'INSERT INTO posts (title, url) VALUES(:title, :url)'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('url', $data['url']);
@@ -55,20 +55,20 @@ class Post
     }
     public function updatePost($data)
     {
-        if (empty($data['Post_id']) || empty($data['title']) || empty($data['url'])) {
+        if (empty($data['post_id']) || empty($data['title']) || empty($data['body'])) {
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'UPDATE Posts SET title=:title, url=:url WHERE id=:id'
+            'UPDATE posts SET title=:title, body=:body WHERE id=:id'
         );
         $statement->bindParam('title', $data['title']);
-        $statement->bindParam('url', $data['url']);
-        $statement->bindParam('id', $data['Post_id']);
+        $statement->bindParam('body', $data['body']);
+        $statement->bindParam('id', $data['post_id']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment
         }
-        return $this->getPost($data['Post_id']);
+        return $this->getPost($data['post_id']);
     }
     public function deletePost($Post_id)
     {
