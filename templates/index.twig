@@ -8,8 +8,10 @@
             <div class="entry-list">
 
                 {% for post in posts %}
+                    {% set query = { 'id': post.id, 'title': post.title|url_encode } %}
+                    
                     <article>
-                        <h2><a href="/detail?id={{ post.id }}">{{ post.title }}</a></h2>
+                        <h2><a href="/detail?{{ query|url_encode }}">{{ post.title }}</a></h2>
                         <time datetime="{{ post.date }}">{{ func.dateString(post.date) }}</time>
                     </article>    
                 {% endfor %}
