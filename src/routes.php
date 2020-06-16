@@ -50,13 +50,10 @@ $app->map(['GET', 'PUT', 'DELETE'], '/edit', function (Request $request, Respons
         $upPost["post_id"] = $id;
 
         $upPost = $post->updatePost($upPost);
-
-        // TODO: redirect to "/detail?:id"
+        return $response->withRedirect("/detail?id=$upPost[id]");
     } elseif ($request->isDelete()) {
         $post->deletePost($id);
-
-        // TODO: redirect to "/"
-
+        return $response->withRedirect('/');
     }
 
     return $this->view->render($response, 'edit.twig', [
@@ -74,9 +71,8 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
         $newPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
         $newPost = $post->createPost($newPost);
 
-        // TODO: redirect to "/detail?id=". $newPost['id']
-
         if ($newPost) {
+            return $response->withRedirect("/detail?id=$newPost[id]");
         } else {
             return $this->view->render($response, 'new.twig', [
                 'path' => $path,
