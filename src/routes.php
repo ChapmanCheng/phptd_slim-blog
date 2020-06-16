@@ -4,14 +4,6 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-// $app->get('/[{name}]', function ($request, $response, $args) {
-//     // Sample log message
-//     $this->logger->info("Slim-Skeleton '/' route");
-
-//     // Render index view
-//     return $this->renderer->render($response, 'index.phtml', $args);
-// });
-
 $app->get('/', function (Request $request, Response $response, array $args) {
     // * index page
     $post = new \Model\Post();
@@ -90,8 +82,9 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
     ]);
 });
 
-$app->get('/pass', function (Request $request, Response $response, array $args) {
-    // * password page
+// ! unused material
+// $app->get('/pass', function (Request $request, Response $response, array $args) {
+//     // * password page
 
-    return $this->view->render($response, 'password.twig');
-});
+//     return $this->view->render($response, 'password.twig');
+// });
