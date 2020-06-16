@@ -1,0 +1,5 @@
+/* custom css*/
+.button.button-danger {
+    background: #d9534f;
+    border-color: #d9534f;
+}

@@ -70,13 +70,13 @@ class Post
         }
         return $this->getPost($data['post_id']);
     }
-    public function deletePost($Post_id)
+    public function deletePost($post_id)
     {
-        $this->getPost($Post_id);
+        $this->getPost($post_id);
         $statement = $this->database->prepare(
             'DELETE FROM posts WHERE id=:id'
         );
-        $statement->bindParam('id', $Post_id);
+        $statement->bindParam('id', $post_id);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment

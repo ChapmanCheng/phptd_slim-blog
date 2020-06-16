@@ -45,7 +45,7 @@ $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $resp
 });
 
 
-$app->map(['GET', 'POST'], '/edit', function (Request $request, Response $response, array $args) {
+$app->map(['GET', 'PUT', 'DELETE'], '/edit', function (Request $request, Response $response, array $args) {
     $post = new \Model\Post();
 
     $params = $request->getQueryParams();
@@ -53,13 +53,18 @@ $app->map(['GET', 'POST'], '/edit', function (Request $request, Response $respon
     $uri = $request->getUri();
     $path = htmlspecialchars($uri->getPath() . '?' . $uri->getQuery());
 
-    if ($request->isPost()) {
+    if ($request->isPut()) {
         $upPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
         $upPost["post_id"] = $id;
 
         $upPost = $post->updatePost($upPost);
 
         // TODO: redirect to "/detail?:id"
+    } elseif ($request->isDelete()) {
+        $post->deletePost($id);
+
+        // TODO: redirect to "/"
+
     }
 
     return $this->view->render($response, 'edit.twig', [

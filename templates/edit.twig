@@ -10,8 +10,14 @@
                     <input type="text" name="title" value="{{ post.title }}"><br>
                     <label for="body">Entry</label>
                     <textarea rows="5" name="body">{{ post.body }}</textarea>
+                    <input type="hidden" name="_METHOD" value="PUT"/>
                     <input type="submit" value="Save Entry" class="button">
-                    <a href="#" class="button button-secondary">Cancel</a>
+                    <input type="reset" value="Cancel" class="button button-secondary">
+                </form>
+
+                <form action="{{ path }}" method="POST" style="margin-top: 1rem;">
+                    <input type="hidden" name="_METHOD" value="DELETE"/>
+                    <input type="submit" id="delete_entry" value="DELETE Entry" class="button button-danger">
                 </form>
             </div>
         </div>
