@@ -1,6 +1,8 @@
 {% extends "base.twig" %}
 {% import "macros.twig" as func %}
 
+{% block subTitle %}&nbsp;-&nbsp;{{- post.title|raw -}}{% endblock %}
+
 {% block contents %}
     <section>
         <div class="container">
@@ -10,11 +12,13 @@
                     <time datetime="{{ post.date }}">{{- func.dateString(post.date) -}}</time>
                     <div class="entry">
                         <p>{{ post.body|raw|nl2br }}</p>
-                        {% if post.tags is not empty %}                            
+                        {% if post.tags is not empty %}
+                            
                             {% set tags = post.tags|split(';') %}
                             {% for tag in tags %}
                                 <span class="pure-button button-xsmall button-success">{{- tag -}}</span>
                             {% endfor %}
+
                         {% endif %}
                         <p><a class="link" href="{{- func.uri('/edit', post, 'id') -}}">Edit Entry</a></p>
                     </div>
