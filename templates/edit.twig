@@ -23,7 +23,7 @@
                     </textarea>
                     <input type="hidden" name="_METHOD" value="PUT"/>
                     <input type="submit" value="Save Entry" class="button">
-                    <a href="{{- func.uri('/blog', post, 'id') -}}" class="button button-secondary">Back</a>
+                    <a href="{{- func.uriTitle('/blog', post) -}}" class="button button-secondary">Back</a>
                 </form>
 
                 <form action="{{ formAction }}" method="POST" class="marginTop">
