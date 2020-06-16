@@ -1,3 +1,30 @@
-{% macro dateString(timestamp) %}
-    {{timestamp|date("F j, Y \\a\\t g:i")}}
-{% endmacro %}
+{#
+    convert datetime string to desirable format
+    @param {timestamp} timestamp data from db
+#}
+
+{%- macro dateString(timestamp) -%}
+    {{- timestamp|date("F j, Y \\a\\t g:i") -}}
+{%- endmacro -%}
+
+{#
+    convert a uri with given data
+    @param {path} a base path, e.g. "/detail", "/edit"
+    @param {post} array data from model
+    @param {field} defult false, can be data post data key, if true, will only set that as uri query params 
+#}
+{%- macro uri(path, post, field = false) -%}    
+    {%- if field -%}
+        {%- if post[field] matches '/\d+/' -%}
+            {%- set params = { (field): post[field] } -%}
+        {%- else -%}
+            {%- set params = { (field): post[field]|url_encode} -%}
+        {%- endif -%}
+    {%- else -%}
+        {%- set params = { 'id': post.id, 'title': post.title|url_encode } -%}
+    {%- endif -%}
+        
+    {%- set query = params|url_encode -%}
+    {%- set uri = [path, query]|join('?') -%}
+    {{- uri|trim -}}
+{%- endmacro -%}

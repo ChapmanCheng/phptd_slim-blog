@@ -20,7 +20,7 @@ $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $resp
     $params = $request->getQueryParams();
     $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
     $uri = $request->getUri();
-    $path = htmlspecialchars($uri->getPath() . '?' . $uri->getQuery());
+    $path = htmlspecialchars($uri->getPath());
 
     if ($request->isPost()) {
         $newComment = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
@@ -43,7 +43,7 @@ $app->map(['GET', 'PUT', 'DELETE'], '/edit', function (Request $request, Respons
     $params = $request->getQueryParams();
     $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
     $uri = $request->getUri();
-    $path = htmlspecialchars($uri->getPath() . '?' . $uri->getQuery());
+    $path = htmlspecialchars($uri->getPath());
 
     if ($request->isPut()) {
         $upPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
