@@ -68,10 +68,21 @@ $app->map(['GET', 'POST'], '/edit', function (Request $request, Response $respon
     ]);
 });
 
-$app->get('/new', function (Request $request, Response $response, array $args) {
-    // * new page
+$app->map(['GET', 'POST'], '/new', function (Request $request, Response $response, array $args) {
+    $uri = $request->getUri();
+    $path = htmlspecialchars($uri->getPath());
 
-    return $this->view->render($response, 'new.twig');
+    if ($request->isPost()) {
+        $post = new \Model\Post();
+        $newPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
+        $newPost = $post->updatePost($newPost);
+
+        // TODO: redirect to "/detail?id=". $newPost['id']
+    }
+
+    return $this->view->render($response, 'new.twig', [
+        'path' => $path
+    ]);
 });
 
 $app->get('/pass', function (Request $request, Response $response, array $args) {
