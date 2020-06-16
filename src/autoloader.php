@@ -1,5 +1,6 @@
 <?php
 
+// TODO: try using composer.json to autoload
 spl_autoload_register('myAutoloader');
 
 function myAutoloader($className)
