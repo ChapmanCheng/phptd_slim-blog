@@ -37,17 +37,31 @@ class Post
         }
         return $Post;
     }
+    public function getPostBySlug($slug)
+    {
+        $statement = $this->database->prepare(
+            'SELECT * FROM posts WHERE slug=:slug'
+        );
+        $statement->bindParam('slug', $slug);
+        $statement->execute();
+        $post = $statement->fetch();
+        if (empty($post)) {
+            //! empty at the moment
+        }
+        return $post;
+    }
     public function createPost($data)
     {
         if (empty($data['title']) || empty($data['body'])) {
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'INSERT INTO posts (title, body, tags) VALUES(:title, :body, :tags)'
+            'INSERT INTO posts (title, body, tags, slug) VALUES(:title, :body, :tags, :slug)'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('body', $data['body']);
         $statement->bindParam('tags', $data['tags']);
+        $statement->bindParam('slug', $data['slug']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment
@@ -60,12 +74,13 @@ class Post
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'UPDATE posts SET title=:title, body=:body, tags=:tags WHERE id=:id'
+            'UPDATE posts SET title=:title, body=:body, tags=:tags, slug=:slug WHERE id=:id'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('body', $data['body']);
         $statement->bindParam('id', $data['post_id']);
         $statement->bindParam('tags', $data['tags']);
+        $statement->bindParam('slug', $data['slug']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment

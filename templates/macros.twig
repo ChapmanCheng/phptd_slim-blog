@@ -28,3 +28,8 @@
     {%- set uri = [path, query]|join('?') -%}
     {{- uri|trim -}}
 {%- endmacro -%}
+
+{%- macro uriTitle(path, post) -%}
+    {%- set uri = [path, post.slug]|join('/') -%}
+    {{- uri|trim -}}
+{%- endmacro -%}
