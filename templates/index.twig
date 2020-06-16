@@ -6,10 +6,9 @@
     <section>
         <div class="container">
             <div class="entry-list">
-
                 {% for post in posts %}
                     <article>
-                        <h2><a href="{{- func.uri("/blog", post) -}}">{{ post.title|raw }}</a></h2>
+                        <h2><a href="{{- func.uriTitle("/blog", post) -}}">{{ post.title|raw }}</a></h2>
                         <time datetime="{{ post.date }}">{{ func.dateString(post.date) }}</time>
                         {% if post.tags is not empty %}
                             <div class="marginTop">    

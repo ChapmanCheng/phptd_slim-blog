@@ -15,15 +15,14 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     ]);
 });
 
-$app->map(['GET', 'POST'], '/blog', function (Request $request, Response $response, array $args) {
+$app->map(['GET', 'POST'], '/blog/{slug}', function (Request $request, Response $response, array $args) {
     $post = new \Model\Post();
     $comment = new \Model\Comment();
 
-    $params = $request->getQueryParams();
-    $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
-    $uri = $request->getUri();
-    $path = htmlspecialchars($uri->getPath());
+    $slug = filter_var($args['slug'], FILTER_SANITIZE_STRING);
+    $path = htmlspecialchars($request->getUri()->getPath());
 
+    // TODO: use switch()
     if ($request->isPost()) {
         $postBody = $request->getParsedBody();
         $mailer = new Mailer($postBody);
@@ -32,9 +31,10 @@ $app->map(['GET', 'POST'], '/blog', function (Request $request, Response $respon
         $comment->createComment($mailer->getPostData());
     }
 
+    $blog = $post->getPostBySlug($slug);
     return $this->view->render($response, 'detail.twig', [
-        'post' => $post->getPost($id),
-        'comments' => $comment->getCommentsByCourseId($id),
+        'post' => $blog,
+        'comments' => $comment->getCommentsByCourseId($blog['id']),
         'path' => $path
     ]);
 });
@@ -52,12 +52,13 @@ $app->map(['GET', 'PUT', 'DELETE'], '/edit', function (Request $request, Respons
         $postBody = $request->getParsedBody();
         $mailer = new Mailer($postBody);
         $mailer->addPostID($id);
+        $mailer->slugifyTitle();
 
         if ($mailer->lookForTags())
             $mailer->stripTagsFromBody()->addTags();
 
         $upPost = $post->updatePost($mailer->getPostData());
-        return $response->withRedirect("/blog?id=$upPost[id]");
+        return $response->withRedirect("/blog/$upPost[slug]");
     } elseif ($request->isDelete()) {
         $post->deletePost($id);
         return $response->withRedirect('/');
@@ -78,6 +79,7 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
 
         $postBody = $request->getParsedBody();
         $mailer = new Mailer($postBody);
+        $mailer->slugifyTitle();
 
 
         if ($mailer->lookForTags())
@@ -86,7 +88,7 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
         $newPost = $post->createPost($mailer->getPostData());
 
         if ($newPost)
-            return $response->withRedirect("/blog?id=$newPost[id]");
+            return $response->withRedirect("/blog/$newPost[slug]");
         else
             return $this->view->render($response, 'new.twig', [
                 'path' => $path,

@@ -52,9 +52,13 @@ class Mailer
         return $this;
     }
 
-    public function addNoTags()
+    // method copied from https://css-tricks.com/snippets/php/create-url-slug-from-post-title/
+    public function slugifyTitle()
     {
-        $this->postData['tags'] = null;
+        $title = $this->postData['title'];
+        $title = strtolower($title);
+        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
+        $this->postData['slug'] = $slug;
         return $this;
     }
 
