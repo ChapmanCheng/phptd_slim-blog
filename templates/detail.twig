@@ -6,10 +6,10 @@
         <div class="container">
             <div class="entry-list single">
                 <article>
-                    <h1>{{ post.title }}</h1>
+                    <h1>{{ post.title|raw }}</h1>
                     <time datetime="{{ post.date }}">{{- func.dateString(post.date) -}}</time>
                     <div class="entry">
-                        <p>{{ post.body|nl2br }}</p>
+                        <p>{{ post.body|raw|nl2br }}</p>
                         {% if post.tags is not empty %}
                             
                             {% set tags = post.tags|split(';') %}
