@@ -28,7 +28,7 @@
                     <a href="{{- func.uri('/blog', post, 'id') -}}" class="button button-secondary">Back</a>
                 </form>
 
-                <form action="{{ formAction }}" method="POST" style="margin-top: 1rem;">
+                <form action="{{ formAction }}" method="POST" class="marginTop">
                     <input type="hidden" name="_METHOD" value="DELETE"/>
                     <input type="submit" id="delete_entry" value="DELETE Entry" class="button button-error">
                 </form>

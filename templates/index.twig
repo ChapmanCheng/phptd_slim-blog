@@ -11,15 +11,14 @@
                     <article>
                         <h2><a href="{{- func.uri("/blog", post) -}}">{{ post.title|raw }}</a></h2>
                         <time datetime="{{ post.date }}">{{ func.dateString(post.date) }}</time>
-                            {% if post.tags is not empty %}
-                                
+                        {% if post.tags is not empty %}
+                            <div class="marginTop">    
                                 {% set tags = post.tags|split(';') %}
                                 {% for tag in tags %}
                                     <span class="pure-button button-xsmall button-success">{{- tag -}}</span>
                                 {% endfor %}
-
-                            {% endif %}
-                        </ol>
+                            </div>
+                        {% endif %}
                     </article>    
                 {% endfor %}
  
