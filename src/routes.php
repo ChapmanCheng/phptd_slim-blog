@@ -15,13 +15,32 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 $app->get('/', function (Request $request, Response $response, array $args) {
     // * index page
-    return $this->view->render($response, 'index.twig');
+    $post = new Post();
+
+    $view = $this->view->render(
+        $response,
+        'index.twig',
+        ['posts' => $post->getPosts()]
+    );
+
+    return $view;
 });
 
-$app->get('/detail', function (Request $request, Response $response, array $args) {
+$app->get('/detail/{id}', function (Request $request, Response $response, array $args) {
     // * detail page
 
-    return $this->view->render($response, 'detail.twig');
+    $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+    $post = new Post();
+    // $comment = new Comment();
+
+    return $this->view->render(
+        $response,
+        'detail.twig',
+        [
+            'post' => $post->getPost($id),
+            // 'comments'=>
+        ]
+    );
 });
 
 $app->get('/edit', function (Request $request, Response $response, array $args) {
