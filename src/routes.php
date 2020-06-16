@@ -16,13 +16,9 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     // * index page
     $post = new \Model\Post();
 
-    $view = $this->view->render(
-        $response,
-        'index.twig',
-        ['posts' => $post->getPosts()]
-    );
-
-    return $view;
+    return $this->view->render($response, 'index.twig', [
+        'posts' => $post->getPosts()
+    ]);
 });
 
 $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $response, array $args) {
@@ -31,6 +27,8 @@ $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $resp
 
     $params = $request->getQueryParams();
     $id = filter_var($params['id'], FILTER_SANITIZE_NUMBER_INT);
+    $uri = $request->getUri();
+    $path = htmlspecialchars($uri->getPath() . '?' . $uri->getQuery());
 
     if ($request->isPost()) {
         $newComment = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
@@ -39,15 +37,11 @@ $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $resp
         $comment->createComment($newComment);
     }
 
-    return $this->view->render(
-        $response,
-        'detail.twig',
-        [
-            'post' => $post->getPost($id),
-            'comments' => $comment->getCommentsByCourseId($id),
-            'path' => htmlspecialchars($request->getUri()->getPath())
-        ]
-    );
+    return $this->view->render($response, 'detail.twig', [
+        'post' => $post->getPost($id),
+        'comments' => $comment->getCommentsByCourseId($id),
+        'path' => $path
+    ]);
 });
 
 
