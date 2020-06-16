@@ -43,10 +43,11 @@ class Post
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'INSERT INTO posts (title, body) VALUES(:title, :body)'
+            'INSERT INTO posts (title, body, tags) VALUES(:title, :body, :tags)'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('body', $data['body']);
+        $statement->bindParam('tags', $data['tags']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment
@@ -59,11 +60,12 @@ class Post
             //! empty at the moment
         }
         $statement = $this->database->prepare(
-            'UPDATE posts SET title=:title, body=:body WHERE id=:id'
+            'UPDATE posts SET title=:title, body=:body, tags=:tags WHERE id=:id'
         );
         $statement->bindParam('title', $data['title']);
         $statement->bindParam('body', $data['body']);
         $statement->bindParam('id', $data['post_id']);
+        $statement->bindParam('tags', $data['tags']);
         $statement->execute();
         if ($statement->rowCount() < 1) {
             //! empty at the moment

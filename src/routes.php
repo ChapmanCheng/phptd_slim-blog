@@ -4,6 +4,8 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
+use Model\Mailer;
+
 $app->get('/', function (Request $request, Response $response, array $args) {
     // * index page
     $post = new \Model\Post();
@@ -23,10 +25,11 @@ $app->map(['GET', 'POST'], '/detail', function (Request $request, Response $resp
     $path = htmlspecialchars($uri->getPath());
 
     if ($request->isPost()) {
-        $newComment = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
-        $newComment["post_id"] = $id;
+        $postBody = $request->getParsedBody();
+        $mailer = new Mailer($postBody);
+        $mailer->addPostID($id);
 
-        $comment->createComment($newComment);
+        $comment->createComment($mailer->getPostData());
     }
 
     return $this->view->render($response, 'detail.twig', [
@@ -46,10 +49,14 @@ $app->map(['GET', 'PUT', 'DELETE'], '/edit', function (Request $request, Respons
     $path = htmlspecialchars($uri->getPath());
 
     if ($request->isPut()) {
-        $upPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
-        $upPost["post_id"] = $id;
+        $postBody = $request->getParsedBody();
+        $mailer = new Mailer($postBody);
+        $mailer->addPostID($id);
 
-        $upPost = $post->updatePost($upPost);
+        if ($mailer->lookForTags())
+            $mailer->stripTagsFromBody()->addTags();
+
+        $upPost = $post->updatePost($mailer->getPostData());
         return $response->withRedirect("/detail?id=$upPost[id]");
     } elseif ($request->isDelete()) {
         $post->deletePost($id);
@@ -68,17 +75,23 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
 
     if ($request->isPost()) {
         $post = new \Model\Post();
-        $newPost = filter_var_array($request->getParsedBody(), FILTER_SANITIZE_STRING);
-        $newPost = $post->createPost($newPost);
 
-        if ($newPost) {
+        $postBody = $request->getParsedBody();
+        $mailer = new Mailer($postBody);
+
+        if ($mailer->lookForTags())
+            $mailer->stripTagsFromBody()->addTags();
+
+
+        $newPost = $post->createPost($mailer->getPostData());
+
+        if ($newPost)
             return $response->withRedirect("/detail?id=$newPost[id]");
-        } else {
+        else
             return $this->view->render($response, 'new.twig', [
                 'path' => $path,
                 'post' => $newPost
             ]);
-        }
     }
 
     return $this->view->render($response, 'new.twig', [
