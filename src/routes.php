@@ -15,7 +15,7 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     ]);
 });
 
-$app->map(['GET', 'POST'], '/detail', function (Request $request, Response $response, array $args) {
+$app->map(['GET', 'POST'], '/blog', function (Request $request, Response $response, array $args) {
     $post = new \Model\Post();
     $comment = new \Model\Comment();
 
@@ -57,7 +57,7 @@ $app->map(['GET', 'PUT', 'DELETE'], '/edit', function (Request $request, Respons
             $mailer->stripTagsFromBody()->addTags();
 
         $upPost = $post->updatePost($mailer->getPostData());
-        return $response->withRedirect("/detail?id=$upPost[id]");
+        return $response->withRedirect("/blog?id=$upPost[id]");
     } elseif ($request->isDelete()) {
         $post->deletePost($id);
         return $response->withRedirect('/');
@@ -86,7 +86,7 @@ $app->map(['GET', 'POST'], '/new', function (Request $request, Response $respons
         $newPost = $post->createPost($mailer->getPostData());
 
         if ($newPost)
-            return $response->withRedirect("/detail?id=$newPost[id]");
+            return $response->withRedirect("/blog?id=$newPost[id]");
         else
             return $this->view->render($response, 'new.twig', [
                 'path' => $path,
