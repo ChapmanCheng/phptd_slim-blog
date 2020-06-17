@@ -3,6 +3,7 @@
 namespace config;
 
 use \PDO;
+use Throwable;
 
 class SqlitePDOConn extends PDO
 {
@@ -15,6 +16,9 @@ class SqlitePDOConn extends PDO
         try {
             parent::__construct($this->dsn);
             $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, pdo::FETCH_ASSOC);
+        } catch (Throwable $t) {
+            echo $t->getMessage();
+            die();
         } catch (Exception $e) {
             echo $e->getMessage();
             die();
